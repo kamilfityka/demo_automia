@@ -1,0 +1,111 @@
+/* ============================================================
+   /login — Logowanie
+   ============================================================ */
+function LoginScreen() {
+  const { nav } = useRouter();
+  const [email, setEmail] = React.useState('jan.kowalski@automnia.pl');
+  const [pass, setPass] = React.useState('••••••••');
+  const [show, setShow] = React.useState(false);
+  const [err, setErr] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const [resetOpen, setResetOpen] = React.useState(false);
+
+  const submit = (e) => {
+    e.preventDefault();
+    setErr('');
+    if (!email.includes('@') || pass.length < 3) { setErr('Nieprawidłowy email lub hasło.'); return; }
+    setLoading(true);
+    setTimeout(() => { setLoading(false); nav('/dashboard'); }, 850);
+  };
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', background: 'var(--color-bg)' }}>
+      {/* left — form */}
+      <div style={{ flex: '1 1 50%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 40 }}>
+        <div style={{ width: '100%', maxWidth: 400 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 44 }}>
+            <span style={{
+              width: 44, height: 44, borderRadius: 14, background: 'var(--gradient)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 8px 24px rgba(155,64,224,0.45)',
+            }}><Icon name="sparkles" size={23} stroke={2.2} /></span>
+            <div style={{ lineHeight: 1.1 }}>
+              <div style={{ fontFamily: 'var(--font-head)', fontWeight: 800, fontSize: 20 }}>LeadBase</div>
+              <div className="muted" style={{ fontSize: 12, fontWeight: 500 }}>by AutomiaCRM</div>
+            </div>
+          </div>
+
+          <h1 style={{ fontSize: 30, marginBottom: 10 }}>Witaj ponownie 👋</h1>
+          <p className="muted" style={{ marginBottom: 32, fontSize: 15 }}>Zaloguj się, aby zarządzać leadami i formularzami.</p>
+
+          <form onSubmit={submit}>
+            <div style={{ marginBottom: 18 }}>
+              <label className="field-label">Email</label>
+              <input className="input" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="twoj@email.pl" />
+            </div>
+            <div style={{ marginBottom: 14 }}>
+              <label className="field-label">Hasło</label>
+              <div style={{ position: 'relative' }}>
+                <input className="input" type={show ? 'text' : 'password'} value={pass} onChange={e => setPass(e.target.value)} placeholder="Twoje hasło" style={{ paddingRight: 52 }} />
+                <button type="button" onClick={() => setShow(s => !s)} style={{
+                  position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)',
+                  width: 36, height: 36, borderRadius: '50%', border: 'none', cursor: 'pointer',
+                  background: 'transparent', color: 'var(--color-input-text)', opacity: 0.6,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}><Icon name={show ? 'eye-off' : 'eye'} size={18} /></button>
+              </div>
+            </div>
+
+            {err && (
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 9, color: '#FF8080', fontSize: 13.5,
+                background: 'rgba(255,77,77,0.12)', border: '1px solid rgba(255,77,77,0.3)',
+                borderRadius: 12, padding: '11px 14px', marginBottom: 14,
+              }}><Icon name="x" size={15} /> {err}</div>
+            )}
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 22 }}>
+              <button type="button" onClick={() => setResetOpen(true)} className="muted click" style={{ background: 'none', border: 'none', fontSize: 13, cursor: 'pointer', fontFamily: 'var(--font-body)' }}>Zapomniałem hasła</button>
+            </div>
+
+            <button type="submit" className="btn btn-primary" disabled={loading} style={{ width: '100%', height: 50, fontSize: 15 }}>
+              {loading ? <span className="spin" style={{ width: 18, height: 18, border: '2px solid rgba(255,255,255,0.4)', borderTopColor: '#fff', borderRadius: '50%', display: 'inline-block' }} /> : <>Zaloguj się <Icon name="chevron-right" size={17} /></>}
+            </button>
+          </form>
+
+          <p className="muted" style={{ fontSize: 12.5, marginTop: 28, textAlign: 'center' }}>
+            Demo — kliknij „Zaloguj się", aby wejść do panelu administratora.
+          </p>
+        </div>
+      </div>
+
+      {/* right — brand panel */}
+      <div style={{ flex: '1 1 50%', position: 'relative', overflow: 'hidden', padding: 56, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'var(--gradient)', opacity: 0.92 }} />
+        <div style={{ position: 'absolute', top: -120, right: -80, width: 420, height: 420, borderRadius: '50%', background: 'rgba(255,255,255,0.16)', filter: 'blur(40px)' }} />
+        <div style={{ position: 'absolute', bottom: -140, left: -60, width: 360, height: 360, borderRadius: '50%', background: 'rgba(26,21,96,0.5)', filter: 'blur(50px)' }} />
+        <div style={{ position: 'relative' }}>
+          <div style={{ display: 'flex', gap: 10, marginBottom: 28 }}>
+            {['Nowy', 'W toku', 'Wygrany'].map((s, i) => (
+              <div key={i} style={{ background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 50, padding: '7px 16px', fontSize: 13, fontWeight: 600, backdropFilter: 'blur(8px)' }}>{s}</div>
+            ))}
+          </div>
+          <h2 style={{ fontSize: 38, fontWeight: 800, lineHeight: 1.12, maxWidth: 460, marginBottom: 18 }}>Zbieraj i obsługuj leady w jednym miejscu.</h2>
+          <p style={{ fontSize: 16, lineHeight: 1.6, maxWidth: 440, opacity: 0.92 }}>Formularze, kanban, automatyczne przypisania i pełna historia każdego zgłoszenia — wszystko w panelu LeadBase.</p>
+        </div>
+      </div>
+
+      <Modal open={resetOpen} onClose={() => setResetOpen(false)} title="Resetuj hasło" width={420}
+        footer={<>
+          <button className="btn btn-ghost btn-sm" onClick={() => setResetOpen(false)}>Anuluj</button>
+          <button className="btn btn-primary btn-sm" onClick={() => setResetOpen(false)}>Wyślij link</button>
+        </>}>
+        <p className="muted" style={{ marginBottom: 18, fontSize: 14 }}>Podaj adres email — wyślemy link do ustawienia nowego hasła.</p>
+        <label className="field-label">Email</label>
+        <input className="input" type="email" placeholder="twoj@email.pl" defaultValue="" />
+      </Modal>
+    </div>
+  );
+}
+
+window.LoginScreen = LoginScreen;

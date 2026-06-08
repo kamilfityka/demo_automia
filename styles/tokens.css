@@ -1,0 +1,347 @@
+/* ============================================================
+   AutomiaCRM / LeadBase — design tokens (MOBILE-FIRST)
+   Dark indigo base, pink→purple→blue gradient accents.
+   The whole app lives inside a phone-sized .device shell:
+   centered bezel on desktop, full-bleed on a real phone.
+   ============================================================ */
+
+:root {
+  /* surfaces */
+  --color-bg: #1A1560;
+  --color-bg-surface: #231C7A;
+  --color-bg-elevated: #2D2490;
+
+  /* text */
+  --color-text: #FFFFFF;
+  --color-text-muted: rgba(255, 255, 255, 0.6);
+  --color-text-soft: rgba(255, 255, 255, 0.85);
+  --color-label: rgba(255, 255, 255, 0.7);
+  --color-border: rgba(255, 255, 255, 0.12);
+  --color-border-strong: rgba(255, 255, 255, 0.2);
+
+  /* gradient accent */
+  --color-gradient-start: #E040A0;
+  --color-gradient-mid: #9B40E0;
+  --color-gradient-end: #4060E0;
+  --gradient: linear-gradient(100deg, #E040A0 0%, #9B40E0 50%, #4060E0 100%);
+  --gradient-soft: linear-gradient(100deg, rgba(224,64,160,0.16) 0%, rgba(155,64,224,0.16) 50%, rgba(64,96,224,0.16) 100%);
+
+  /* form inputs */
+  --color-input-bg: #FFFFFF;
+  --color-input-text: #1A1560;
+  --color-input-placeholder: rgba(26, 21, 96, 0.45);
+
+  /* status */
+  --color-danger: #FF4D4D;
+  --color-warning: #FFB020;
+  --color-success: #36B37E;
+
+  /* shape */
+  --radius-pill: 50px;
+  --radius-card: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+
+  /* shadow */
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-pop: 0 16px 48px rgba(0, 0, 0, 0.55);
+  --shadow-glow: 0 10px 40px rgba(155, 64, 224, 0.4);
+
+  /* type */
+  --font-head: 'Sora', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* mobile layout */
+  --device-w: 402px;
+  --device-h: 872px;
+  --screen-pad: 18px;          /* horizontal page padding */
+  --topbar-h: 58px;
+  --nav-h: 66px;
+  --gap: 14px;                 /* default vertical rhythm */
+  --safe-bottom: 0px;          /* device safe area filled by JS on real phones */
+}
+
+/* density tweak */
+[data-density="compact"] { --screen-pad: 14px; --gap: 11px; }
+[data-density="comfy"]   { --screen-pad: 20px; --gap: 18px; }
+
+/* heading family swap (tweak) */
+[data-head="space"] { --font-head: 'Space Grotesk', system-ui, sans-serif; }
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #0E0B3A;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#root { min-height: 100vh; min-height: 100dvh; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-head);
+  margin: 0;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+h1 { font-size: 25px; font-weight: 800; line-height: 1.15; }
+h2 { font-size: 20px; font-weight: 700; line-height: 1.2; }
+h3 { font-size: 16px; font-weight: 700; }
+
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+
+::selection { background: rgba(224, 64, 160, 0.4); }
+
+/* ============================================================
+   Device shell — phone bezel on desktop, full-bleed on mobile
+   ============================================================ */
+.device-stage {
+  min-height: 100vh; min-height: 100dvh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(224,64,160,0.22), transparent 42%),
+    radial-gradient(circle at 85% 88%, rgba(64,96,224,0.22), transparent 45%),
+    #0E0B3A;
+}
+.device {
+  position: relative;
+  width: var(--device-w);
+  height: var(--device-h);
+  max-height: calc(100dvh - 48px);
+  background: var(--color-bg);
+  border-radius: 46px;
+  padding: 0;
+  box-shadow:
+    0 0 0 12px #050416,
+    0 0 0 13px rgba(255,255,255,0.08),
+    0 40px 100px rgba(0,0,0,0.6);
+  overflow: hidden;
+}
+.device-screen {
+  position: relative;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  background: var(--color-bg);
+}
+/* notch / status bar pill */
+.device-notch {
+  position: absolute; top: 0; left: 0; right: 0; height: 0; z-index: 50;
+  pointer-events: none;
+}
+.device-notch::after {
+  content: ""; position: absolute; top: 9px; left: 50%; transform: translateX(-50%);
+  width: 118px; height: 30px; border-radius: 18px; background: #050416;
+}
+.ov-root { position: absolute; inset: 0; z-index: 1000; pointer-events: none; }
+
+/* the scrollable app body */
+.scroll {
+  flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.scroll::-webkit-scrollbar { width: 0; height: 0; }
+
+/* On a real phone (or narrow viewport) drop the bezel and fill the screen. */
+@media (max-width: 600px) {
+  .device-stage { padding: 0; background: var(--color-bg); align-items: stretch; }
+  .device {
+    width: 100%; height: 100vh; height: 100dvh; max-height: none;
+    border-radius: 0; box-shadow: none;
+  }
+  .device-notch { display: none; }
+  :root { --safe-bottom: env(safe-area-inset-bottom, 0px); }
+}
+
+/* ============================================================
+   Reusable building-block classes
+   ============================================================ */
+.gradient-text {
+  background: var(--gradient);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.surface {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* ---- buttons ---- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 48px; padding: 0 22px; border-radius: var(--radius-pill);
+  font-family: var(--font-head); font-weight: 600; font-size: 15px;
+  border: none; cursor: pointer; white-space: nowrap;
+  transition: transform 0.12s ease, box-shadow 0.18s ease, background 0.18s ease, opacity 0.18s ease;
+}
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primary { background: var(--gradient); color: #fff; box-shadow: 0 6px 20px rgba(155, 64, 224, 0.35); }
+.btn-secondary {
+  position: relative; background: transparent; color: #fff; border: 1.5px solid transparent;
+  background-image: linear-gradient(var(--color-bg-surface), var(--color-bg-surface)), var(--gradient);
+  background-origin: border-box; background-clip: padding-box, border-box;
+}
+.btn-ghost { background: rgba(255, 255, 255, 0.07); color: var(--color-text-soft); }
+.btn-ghost:active { background: rgba(255, 255, 255, 0.14); }
+
+.btn-sm { height: 40px; padding: 0 16px; font-size: 14px; }
+.btn-icon {
+  width: 44px; height: 44px; padding: 0; border-radius: 13px;
+  background: rgba(255, 255, 255, 0.07); color: var(--color-text-soft);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; border: none; transition: background 0.15s ease; flex-shrink: 0;
+}
+.btn-icon:active { background: rgba(255, 255, 255, 0.16); }
+
+/* ---- floating action button ---- */
+.fab {
+  position: absolute; right: 18px; z-index: 60;
+  bottom: calc(var(--nav-h) + var(--safe-bottom) + 16px);
+  width: 58px; height: 58px; border-radius: 20px; border: none; cursor: pointer;
+  background: var(--gradient); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 30px rgba(155,64,224,0.55);
+  transition: transform 0.14s ease, box-shadow 0.18s ease;
+}
+.fab:active { transform: scale(0.92); }
+.fab.no-nav { bottom: calc(var(--safe-bottom) + 18px); }
+
+/* ---- form fields (touch sized) ---- */
+.field-label { display: block; font-size: 13.5px; font-weight: 500; color: var(--color-label); margin-bottom: 8px; }
+.input, .textarea, .select-native {
+  width: 100%; background: var(--color-input-bg); color: var(--color-input-text);
+  border: none; font-family: var(--font-body); font-size: 16px; /* 16px avoids iOS zoom */
+  outline: none; transition: box-shadow 0.15s ease;
+}
+.input { height: 52px; padding: 0 20px; border-radius: var(--radius-pill); }
+.textarea { padding: 14px 18px; border-radius: 20px; resize: vertical; min-height: 104px; line-height: 1.5; }
+.select-native {
+  height: 52px; padding: 0 44px 0 20px; border-radius: var(--radius-pill);
+  appearance: none; cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%231A1560' d='M0 0h12L6 8z'/></svg>");
+  background-repeat: no-repeat; background-position: right 18px center;
+}
+.input::placeholder, .textarea::placeholder { color: var(--color-input-placeholder); }
+.input:focus, .textarea:focus, .select-native:focus { box-shadow: 0 0 0 3px rgba(155, 64, 224, 0.5); }
+.input.input-error, .textarea.input-error { box-shadow: 0 0 0 2px var(--color-danger); }
+.field-error { color: var(--color-danger); font-size: 12.5px; margin-top: 6px; }
+.field-help { color: var(--color-text-muted); font-size: 12.5px; margin-top: 6px; }
+
+/* ---- status badges ---- */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 12px;
+  border-radius: var(--radius-pill); font-size: 12.5px; font-weight: 600;
+  font-family: var(--font-body); border: 1px solid transparent; white-space: nowrap;
+}
+.badge .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.badge-nowy     { background: rgba(64,96,224,0.25);  color: #7BA7FF; border-color: rgba(64,96,224,0.4); }
+.badge-wtoku    { background: rgba(255,176,32,0.2);  color: #FFD166; border-color: rgba(255,176,32,0.4); }
+.badge-oczekuje { background: rgba(155,64,224,0.25); color: #C77DFF; border-color: rgba(155,64,224,0.4); }
+.badge-wygrany  { background: rgba(54,179,126,0.2);  color: #57E8A8; border-color: rgba(54,179,126,0.4); }
+.badge-przegrany{ background: rgba(255,77,77,0.2);   color: #FF8080; border-color: rgba(255,77,77,0.4); }
+.badge-zamkniety{ background: rgba(255,255,255,0.08);color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.15); }
+.badge-admin   { background: rgba(224,64,160,0.22); color: #FF9AD5; border-color: rgba(224,64,160,0.4); }
+.badge-agent   { background: rgba(64,96,224,0.22);  color: #7BA7FF; border-color: rgba(64,96,224,0.4); }
+.badge-partner { background: rgba(54,179,126,0.18); color: #57E8A8; border-color: rgba(54,179,126,0.35); }
+
+/* ---- avatar ---- */
+.avatar {
+  display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;
+  font-family: var(--font-head); font-weight: 700; color: #fff; flex-shrink: 0; letter-spacing: 0.02em;
+}
+
+/* ---- chips ---- */
+.chip {
+  display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 13px;
+  border-radius: var(--radius-pill); background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--color-border); font-size: 13px; color: var(--color-text-soft);
+}
+
+/* ---- card press feedback ---- */
+.press { transition: transform 0.12s ease, background 0.15s ease; }
+.press:active { transform: scale(0.985); }
+
+/* ---- skeleton ---- */
+.skeleton {
+  background: linear-gradient(100deg, rgba(255,255,255,0.05) 30%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.05) 70%);
+  background-size: 200% 100%; animation: shimmer 1.4s infinite linear; border-radius: 8px;
+}
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+/* ---- divider ---- */
+.divider { height: 1px; background: var(--color-border); border: none; margin: 0; }
+
+/* utility */
+.muted { color: var(--color-text-muted); }
+.soft { color: var(--color-text-soft); }
+.mono, .tnum { font-variant-numeric: tabular-nums; }
+.nowrap { white-space: nowrap; }
+.click { cursor: pointer; }
+.trunc { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ============================================================
+   Animations
+   ============================================================ */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin { animation: spin 0.7s linear infinite; }
+@keyframes toastIn { from { opacity: 0; transform: translateY(16px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.toast-in { animation: toastIn 0.28s cubic-bezier(.3,.8,.3,1); }
+@keyframes sheetIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes menuIn { from { opacity: 0; transform: translateY(-6px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.menu-in { animation: menuIn 0.16s ease; transform-origin: top; }
+
+/* ============================================================
+   Bottom sheet
+   ============================================================ */
+.sheet-backdrop {
+  position: absolute; inset: 0; z-index: 100; pointer-events: auto;
+  background: rgba(8, 6, 30, 0.6); backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease;
+}
+.sheet {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 101; pointer-events: auto;
+  background: var(--color-bg-surface);
+  border-top: 1px solid var(--color-border-strong);
+  border-radius: 26px 26px 0 0;
+  box-shadow: 0 -16px 50px rgba(0,0,0,0.5);
+  display: flex; flex-direction: column;
+  max-height: 92%;
+  animation: sheetIn 0.3s cubic-bezier(.25,.9,.3,1);
+}
+.sheet-grip { width: 40px; height: 5px; border-radius: 50px; background: rgba(255,255,255,0.22); margin: 10px auto 4px; flex-shrink: 0; }
+.sheet-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 6px 18px 14px; flex-shrink: 0;
+}
+.sheet-body { padding: 0 18px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.sheet-foot {
+  display: flex; gap: 12px; padding: 14px 18px;
+  padding-bottom: calc(14px + var(--safe-bottom));
+  border-top: 1px solid var(--color-border); flex-shrink: 0;
+}
+
+/* ============================================================
+   Nav hover affordance (desktop pointer only)
+   ============================================================ */
+.lead-link { transition: color 0.15s ease; }
+@media (hover: hover) {
+  .lift:hover { transform: translateY(-2px); box-shadow: var(--shadow-pop); }
+  .click:hover > .lead-link, .lead-link:hover { color: #C77DFF; }
+}
+.lift { transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease; }
