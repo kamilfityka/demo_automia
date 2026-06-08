@@ -7,8 +7,9 @@ function FormsScreen() {
   const [forms, setForms] = React.useState(window.DB.forms);
 
   const toggleActive = (id) => {
-    setForms(f => f.map(x => x.id === id ? { ...x, active: !x.active } : x));
     const form = forms.find(x => x.id === id);
+    window.DB.toggleForm(id);
+    setForms(window.DB.forms);
     toast(form.active ? 'Formularz dezaktywowany' : 'Formularz aktywowany');
   };
 
@@ -37,7 +38,7 @@ function FormsScreen() {
                     <Menu title={f.name} trigger={<button className="btn-icon" style={{ width: 38, height: 38 }}><Icon name="more" size={18} /></button>}
                       items={[
                         { icon: 'copy', label: 'Duplikuj', onClick: () => toast('Formularz zduplikowany') },
-                        { icon: 'trash', label: 'Usuń', danger: true, onClick: () => { setForms(x => x.filter(y => y.id !== f.id)); toast('Formularz usunięty'); } },
+                        { icon: 'trash', label: 'Usuń', danger: true, onClick: () => { window.DB.deleteForm(f.id); setForms(window.DB.forms); toast('Formularz usunięty'); } },
                       ]} />
                   </div>
 

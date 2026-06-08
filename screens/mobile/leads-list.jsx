@@ -91,7 +91,7 @@ function LeadsScreen({ user }) {
   const [visible, setVisible] = React.useState(12);
 
   const toggleStatus = (k) => setStatusFilter(f => f.includes(k) ? f.filter(x => x !== k) : [...f, k]);
-  const setStatus = (id, status) => setLeadsState(s => s.map(l => l.id === id ? { ...l, status } : l));
+  const setStatus = (id, status) => { window.DB.setLeadStatus(id, status); setLeadsState(window.DB.leads); };
 
   const filtered = React.useMemo(() => {
     return leadsState.filter(l => {
@@ -154,7 +154,7 @@ function LeadsScreen({ user }) {
       <FilterSheet open={filterOpen} onClose={() => setFilterOpen(false)} statusFilter={statusFilter} toggleStatus={toggleStatus}
         assignFilter={assignFilter} setAssignFilter={setAssignFilter}
         onClear={() => { setStatusFilter([]); setAssignFilter(null); }} />
-      <NewLeadModalM open={newOpen} onClose={() => setNewOpen(false)} onCreate={() => { setNewOpen(false); toast('Lead utworzony'); }} />
+      <NewLeadModalM open={newOpen} onClose={() => setNewOpen(false)} onCreate={(data) => { window.DB.addLead(data); setLeadsState(window.DB.leads); setNewOpen(false); toast('Lead utworzony'); }} />
       <LeadSlideOverM id={slideId} onClose={() => setSlideId(null)} nav={nav} />
       {/* per-lead action sheet */}
       <BottomSheet open={!!menuLead} onClose={() => setMenuLead(null)} title={menuLead ? menuLead.name : ''}>
@@ -170,7 +170,7 @@ function LeadsScreen({ user }) {
               ))}
             </div>
             <div style={{ height: 6 }} />
-            <ActionRow icon="trash" danger label="Usuń lead" onClick={() => { setLeadsState(s => s.filter(x => x.id !== menuLead.id)); setMenuLead(null); toast('Lead usunięty'); }} />
+            <ActionRow icon="trash" danger label="Usuń lead" onClick={() => { window.DB.deleteLead(menuLead.id); setLeadsState(window.DB.leads); setMenuLead(null); toast('Lead usunięty'); }} />
           </div>
         )}
       </BottomSheet>

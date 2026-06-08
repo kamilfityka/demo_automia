@@ -13,7 +13,7 @@
   ];
 
   // agents / users
-  const users = [
+  let users = [
     { id: 'u1', name: 'Jan Kowalski',     email: 'jan.kowalski@automnia.pl',   role: 'admin',   status: 'aktywny',   last: '2026-06-06 08:42', color: '#E040A0' },
     { id: 'u2', name: 'Anna Maj',         email: 'anna.maj@automnia.pl',       role: 'agent',   status: 'aktywny',   last: '2026-06-06 09:10', color: '#9B40E0' },
     { id: 'u3', name: 'Piotr Nowak',      email: 'piotr.nowak@automnia.pl',    role: 'agent',   status: 'aktywny',   last: '2026-06-05 17:55', color: '#4060E0' },
@@ -22,7 +22,7 @@
     { id: 'u6', name: 'Magda Zielińska',  email: 'magda@zielinska-consulting.pl', role: 'partner', status: 'nieaktywny', last: '2026-05-28 11:05', color: '#FF4D4D' },
   ];
 
-  const forms = [
+  let forms = [
     { id: 'f1', name: 'Formularz kontaktowy',   slug: 'kontakt',          desc: 'Główny formularz ze strony automnia.pl', responses: 248, active: true,  created: '2025-11-03', partner: null,  assignTo: 'u2' },
     { id: 'f2', name: 'Zapytanie ofertowe',     slug: 'oferta',           desc: 'Formularz wyceny wdrożenia automatyzacji', responses: 132, active: true,  created: '2025-12-12', partner: null,  assignTo: 'u3' },
     { id: 'f3', name: 'Formularz partnera',     slug: 'partner-lewandowski', desc: 'Leady zgłaszane przez T. Lewandowskiego', responses: 64,  active: true,  created: '2026-01-20', partner: 'u5',  assignTo: 'u2' },
@@ -59,7 +59,7 @@
     ['Justyna Walczak', 'Studio Urody Lumière', 'salon@lumiere-studio.pl', '+48 530 220 665', 'zamkniety', 'f1', 'u4', '2026-05-28 17:25', ['beauty']],
   ];
 
-  const leads = rawLeads.map((r, i) => ({
+  let leads = rawLeads.map((r, i) => ({
     id: 'l' + (i + 1),
     name: r[0],
     company: r[1],
@@ -149,13 +149,158 @@
     return STATUSES.map(s => ({ ...s, count: m[s.key] }));
   }
 
+  /* ============================================================
+     Persistence layer (localStorage)
+     Mutable collections (leads, forms, users, notes) are loaded
+     from localStorage if present and saved on every mutation,
+     so a PoC survives page reloads. Swapping this block for a
+     real backend later only touches the methods below.
+     ============================================================ */
+  const LS_KEY = 'leadbase.db.v1';
+  let notes = {};                 // { [leadId]: [{ user, text, time, ts }] }
+  let seq = { lead: 25, form: 7, user: 7 };
+
+  function saveState() {
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify({ leads, forms, users, notes, seq }));
+    } catch (e) { /* storage unavailable — stay in-memory */ }
+  }
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (!raw) return;
+      const s = JSON.parse(raw);
+      if (s.leads) leads = s.leads;
+      if (s.forms) forms = s.forms;
+      if (s.users) users = s.users;
+      if (s.notes) notes = s.notes;
+      if (s.seq) seq = s.seq;
+    } catch (e) { /* corrupt state — fall back to seed data */ }
+  }
+
+  function nowStr() {
+    const d = new Date();
+    const p = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+  }
+
+  // ---- leads ----
+  function addLead(data) {
+    const id = 'l' + (seq.lead++);
+    const lead = {
+      id,
+      name: data.name || 'Bez nazwy',
+      company: data.company || '',
+      email: data.email || '',
+      phone: data.phone || '',
+      status: data.status || 'nowy',
+      formId: data.formId || null,
+      assignedTo: data.assignedTo || 'u2',
+      created: data.created || nowStr(),
+      tags: data.tags || [],
+      answers: data.answers || [
+        { label: 'Imię i nazwisko', value: data.name || '' },
+        { label: 'Firma', value: data.company || '' },
+        { label: 'Email', value: data.email || '' },
+        { label: 'Telefon', value: data.phone || '' },
+      ],
+    };
+    leads = [lead, ...leads];
+    if (lead.formId) forms = forms.map(f => f.id === lead.formId ? { ...f, responses: f.responses + 1 } : f);
+    saveState();
+    return lead;
+  }
+  function updateLead(id, patch) {
+    leads = leads.map(l => l.id === id ? { ...l, ...patch } : l);
+    saveState();
+    return leads.find(l => l.id === id) || null;
+  }
+  function setLeadStatus(id, status) { return updateLead(id, { status }); }
+  function deleteLead(id) { leads = leads.filter(l => l.id !== id); delete notes[id]; saveState(); }
+
+  // ---- notes (per lead) ----
+  function notesFor(id) { return notes[id] || []; }
+  function addNote(leadId, userId, text) {
+    const note = { user: userId, text, time: 'teraz', ts: Date.now() };
+    notes = { ...notes, [leadId]: [note, ...(notes[leadId] || [])] };
+    saveState();
+    return note;
+  }
+
+  // ---- forms ----
+  function addForm(data) {
+    const id = 'f' + (seq.form++);
+    const form = {
+      id,
+      name: data.name || 'Nowy formularz',
+      slug: data.slug || ('formularz-' + id),
+      desc: data.desc || '',
+      responses: 0,
+      active: data.active !== false,
+      created: (data.created || nowStr()).slice(0, 10),
+      partner: data.partner || null,
+      assignTo: data.assignTo || 'u2',
+    };
+    forms = [form, ...forms];
+    saveState();
+    return form;
+  }
+  function updateForm(id, patch) {
+    forms = forms.map(f => f.id === id ? { ...f, ...patch } : f);
+    saveState();
+    return forms.find(f => f.id === id) || null;
+  }
+  function toggleForm(id) {
+    const f = forms.find(x => x.id === id);
+    return updateForm(id, { active: !(f && f.active) });
+  }
+  function deleteForm(id) { forms = forms.filter(f => f.id !== id); saveState(); }
+
+  // ---- users ----
+  function addUser(data) {
+    const id = 'u' + (seq.user++);
+    const colors = ['#E040A0', '#9B40E0', '#4060E0', '#36B37E', '#FFB020', '#FF4D4D'];
+    const user = {
+      id,
+      name: data.name || 'Nowy użytkownik',
+      email: data.email || '',
+      role: data.role || 'agent',
+      status: 'aktywny',
+      last: nowStr(),
+      color: data.color || colors[seq.user % colors.length],
+    };
+    users = [...users, user];
+    saveState();
+    return user;
+  }
+  function updateUser(id, patch) {
+    users = users.map(u => u.id === id ? { ...u, ...patch } : u);
+    saveState();
+    return users.find(u => u.id === id) || null;
+  }
+
+  function reset() { try { localStorage.removeItem(LS_KEY); } catch (e) {} window.location.reload(); }
+
+  // hydrate from storage before exposing the API
+  loadState();
+
   window.DB = {
-    STATUSES, users, forms, leads, recentActivity, kpis, fieldTypes,
-    builderSchema, statusCounts, activityFor,
+    STATUSES, recentActivity, kpis, fieldTypes, builderSchema,
+    // live getters — always read the current (possibly persisted) collections
+    get users() { return users; },
+    get forms() { return forms; },
+    get leads() { return leads; },
+    statusCounts, activityFor,
     statusByKey: k => STATUSES.find(s => s.key === k),
     userById: id => users.find(u => u.id === id) || null,
     formById: id => forms.find(f => f.id === id) || null,
     leadById: id => leads.find(l => l.id === id) || null,
     agents: () => users.filter(u => u.role === 'agent' || u.role === 'admin'),
+    // mutations (persisted)
+    addLead, updateLead, setLeadStatus, deleteLead,
+    notesFor, addNote,
+    addForm, updateForm, toggleForm, deleteForm,
+    addUser, updateUser,
+    reset,
   };
 })();
