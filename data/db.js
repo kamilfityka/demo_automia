@@ -23,12 +23,7 @@
   ];
 
   let forms = [
-    { id: 'f1', name: 'Formularz kontaktowy',   slug: 'kontakt',          desc: 'Główny formularz ze strony automnia.pl', responses: 248, active: true,  created: '2025-11-03', partner: null,  assignTo: 'u2' },
-    { id: 'f2', name: 'Zapytanie ofertowe',     slug: 'oferta',           desc: 'Formularz wyceny wdrożenia automatyzacji', responses: 132, active: true,  created: '2025-12-12', partner: null,  assignTo: 'u3' },
-    { id: 'f3', name: 'Formularz partnera',     slug: 'partner-lewandowski', desc: 'Leady zgłaszane przez T. Lewandowskiego', responses: 64,  active: true,  created: '2026-01-20', partner: 'u5',  assignTo: 'u2' },
-    { id: 'f4', name: 'Webinar — zapisy',       slug: 'webinar-ai',       desc: 'Rejestracja na webinar „AI w sprzedaży”', responses: 410, active: true,  created: '2026-02-08', partner: null,  assignTo: 'u4' },
-    { id: 'f5', name: 'Demo produktu',          slug: 'demo',             desc: 'Umów prezentację platformy', responses: 89,  active: false, created: '2026-03-15', partner: null,  assignTo: 'u3' },
-    { id: 'f6', name: 'Newsletter B2B',         slug: 'newsletter',       desc: 'Zapis na listę mailingową', responses: 1530, active: true,  created: '2025-09-01', partner: null,  assignTo: 'u2' },
+    { id: 'f1', name: 'Formularz zgłoszeniowy', slug: 'zgloszenie', desc: 'Główny formularz zgłoszeń od resellerów i klientów', responses: 24, active: true, created: '2025-11-03', partner: null, assignTo: 'u2' },
   ];
 
   // leads — realistic Polish companies
@@ -66,7 +61,7 @@
     email: r[2],
     phone: r[3],
     status: r[4],
-    formId: r[5],
+    formId: 'f1',   // single example form — all demo leads originate here
     assignedTo: r[6],
     created: r[7],
     tags: r[8],
@@ -156,9 +151,9 @@
      so a PoC survives page reloads. Swapping this block for a
      real backend later only touches the methods below.
      ============================================================ */
-  const LS_KEY = 'leadbase.db.v1';
+  const LS_KEY = 'leadbase.db.v2';
   let notes = {};                 // { [leadId]: [{ user, text, time, ts }] }
-  let seq = { lead: 25, form: 7, user: 7 };
+  let seq = { lead: 25, form: 2, user: 7 };
 
   function saveState() {
     try {
