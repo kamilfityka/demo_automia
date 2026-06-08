@@ -75,7 +75,7 @@ function LoginScreen() {
       {/* right — photo (capped at 480px tall) + copy below */}
       <div style={{ flex: '1 1 50%', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 36, background: 'var(--gradient)' }}>
         <div style={{ width: '100%', height: 480, overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src="assets/automaty.png" alt="Automaty samoobsługowe Automnia" style={{ width: '80%', height: '80%', objectFit: 'cover', display: 'block' }} />
+          <img src="assets/automaty.png" alt="Automaty samoobsługowe Automnia" style={{ maxWidth: '80%', maxHeight: '100%', width: 'auto', height: 'auto', objectFit: 'contain', display: 'block' }} />
         </div>
         <div style={{ position: 'relative', padding: '0 56px' }}>
           <div style={{ display: 'flex', gap: 10, marginBottom: 22 }}>
