@@ -80,18 +80,29 @@ function LoginScreen() {
       </div>
 
       {/* right — brand panel */}
-      <div style={{ flex: '1 1 50%', position: 'relative', overflow: 'hidden', padding: 56, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+      <div style={{ flex: '1 1 50%', position: 'relative', overflow: 'hidden', padding: 56, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 36 }}>
         <div style={{ position: 'absolute', inset: 0, background: 'var(--gradient)', opacity: 0.92 }} />
         <div style={{ position: 'absolute', top: -120, right: -80, width: 420, height: 420, borderRadius: '50%', background: 'rgba(255,255,255,0.16)', filter: 'blur(40px)' }} />
         <div style={{ position: 'absolute', bottom: -140, left: -60, width: 360, height: 360, borderRadius: '50%', background: 'rgba(26,21,96,0.5)', filter: 'blur(50px)' }} />
+
+        {/* Zdjęcie automatów — podmień placeholder na własne zdjęcie:
+            <img src="assets/automaty.jpg" alt="Automaty Automnia" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> */}
+        <div style={{ position: 'relative', width: '100%', maxWidth: 480, aspectRatio: '16 / 10', borderRadius: 24, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.35)', background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(6px)', boxShadow: '0 24px 70px rgba(0,0,0,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.92)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, padding: 24 }}>
+            <Icon name="image" size={42} stroke={1.7} />
+            <div style={{ fontFamily: 'var(--font-head)', fontWeight: 700, fontSize: 15.5 }}>Miejsce na zdjęcie automatów</div>
+            <div style={{ fontSize: 12.5, opacity: 0.8, maxWidth: 260, lineHeight: 1.4 }}>Wgraj zdjęcie do assets/automaty.jpg</div>
+          </div>
+        </div>
+
         <div style={{ position: 'relative' }}>
-          <div style={{ display: 'flex', gap: 10, marginBottom: 28 }}>
+          <div style={{ display: 'flex', gap: 10, marginBottom: 22 }}>
             {['Nowy', 'W toku', 'Wygrany'].map((s, i) => (
               <div key={i} style={{ background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 50, padding: '7px 16px', fontSize: 13, fontWeight: 600, backdropFilter: 'blur(8px)' }}>{s}</div>
             ))}
           </div>
-          <h2 style={{ fontSize: 38, fontWeight: 800, lineHeight: 1.12, maxWidth: 460, marginBottom: 18 }}>Zgłoszenia o automaty samoobsługowe w jednym miejscu.</h2>
-          <p style={{ fontSize: 16, lineHeight: 1.6, maxWidth: 440, opacity: 0.92 }}>Formularz zgłoszeniowy, przypisania do zespołu i pełna historia każdego zapytania — wszystko w panelu Automnia.</p>
+          <h2 style={{ fontSize: 32, fontWeight: 800, lineHeight: 1.12, maxWidth: 460, marginBottom: 16 }}>Zgłoszenia o automaty samoobsługowe w jednym miejscu.</h2>
+          <p style={{ fontSize: 15.5, lineHeight: 1.6, maxWidth: 440, opacity: 0.92 }}>Formularz zgłoszeniowy, przypisania do zespołu i pełna historia każdego zapytania — wszystko w panelu Automnia.</p>
         </div>
       </div>
 
