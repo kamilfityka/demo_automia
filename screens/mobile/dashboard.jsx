@@ -143,4 +143,4 @@ function DashboardScreen({ user }) {
   );
 }
 
-window.DashboardScreen = DashboardScreen;
+window.DashboardScreenM = DashboardScreen;

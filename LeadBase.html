@@ -11,12 +11,6 @@
 
   <link rel="stylesheet" href="styles/tokens.css" />
 
-  <style>
-    /* success-card entrance (public form) */
-    @keyframes modalIn { from { opacity: 0; transform: translateY(14px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    .modal-in { animation: modalIn 0.32s cubic-bezier(.3,.8,.3,1); }
-  </style>
-
   <template id="__bundler_thumbnail">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
       <rect width="100" height="100" fill="#1A1560"/>
@@ -38,20 +32,36 @@
   <!-- data (plain JS) -->
   <script src="data/db.js"></script>
 
-  <!-- components + screens (babel) -->
+  <!-- shared components (babel) -->
   <script type="text/babel" src="components/icons.jsx"></script>
   <script type="text/babel" src="components/ui.jsx"></script>
   <script type="text/babel" src="components/shell.jsx"></script>
   <script type="text/babel" src="tweaks-panel.jsx"></script>
-  <script type="text/babel" src="screens/login.jsx"></script>
-  <script type="text/babel" src="screens/dashboard.jsx"></script>
-  <script type="text/babel" src="screens/leads-list.jsx"></script>
-  <script type="text/babel" src="screens/leads-extra.jsx"></script>
-  <script type="text/babel" src="screens/lead-detail.jsx"></script>
-  <script type="text/babel" src="screens/forms-list.jsx"></script>
-  <script type="text/babel" src="screens/form-builder.jsx"></script>
-  <script type="text/babel" src="screens/public-form.jsx"></script>
-  <script type="text/babel" src="screens/settings.jsx"></script>
+
+  <!-- mobile screen implementations -->
+  <script type="text/babel" src="screens/mobile/login.jsx"></script>
+  <script type="text/babel" src="screens/mobile/dashboard.jsx"></script>
+  <script type="text/babel" src="screens/mobile/leads-list.jsx"></script>
+  <script type="text/babel" src="screens/mobile/leads-extra.jsx"></script>
+  <script type="text/babel" src="screens/mobile/lead-detail.jsx"></script>
+  <script type="text/babel" src="screens/mobile/forms-list.jsx"></script>
+  <script type="text/babel" src="screens/mobile/form-builder.jsx"></script>
+  <script type="text/babel" src="screens/mobile/public-form.jsx"></script>
+  <script type="text/babel" src="screens/mobile/settings.jsx"></script>
+
+  <!-- desktop screen implementations -->
+  <script type="text/babel" src="screens/desktop/login.jsx"></script>
+  <script type="text/babel" src="screens/desktop/dashboard.jsx"></script>
+  <script type="text/babel" src="screens/desktop/leads-list.jsx"></script>
+  <script type="text/babel" src="screens/desktop/leads-extra.jsx"></script>
+  <script type="text/babel" src="screens/desktop/lead-detail.jsx"></script>
+  <script type="text/babel" src="screens/desktop/forms-list.jsx"></script>
+  <script type="text/babel" src="screens/desktop/form-builder.jsx"></script>
+  <script type="text/babel" src="screens/desktop/public-form.jsx"></script>
+  <script type="text/babel" src="screens/desktop/settings.jsx"></script>
+
+  <!-- responsive wrappers + app root -->
+  <script type="text/babel" src="screens/responsive.jsx"></script>
   <script type="text/babel" src="app.jsx"></script>
 </body>
 </html>

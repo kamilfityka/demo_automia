@@ -59,6 +59,10 @@
   --nav-h: 66px;
   --gap: 14px;                 /* default vertical rhythm */
   --safe-bottom: 0px;          /* device safe area filled by JS on real phones */
+
+  /* desktop layout */
+  --sidebar-w: 260px;
+  --row-h: 56px;
 }
 
 /* density tweak */
@@ -144,6 +148,25 @@ button { font-family: inherit; }
   width: 118px; height: 30px; border-radius: 18px; background: #050416;
 }
 .ov-root { position: absolute; inset: 0; z-index: 1000; pointer-events: none; }
+.ov-fixed { position: fixed; inset: 0; }
+
+/* ============================================================
+   Responsive app stages (chosen at runtime by useIsDesktop)
+   · phone-stage → full-height flex column (top bar + scroll + nav)
+   · desk-stage  → block container, window scrolls, sidebar layout
+   ============================================================ */
+.phone-stage {
+  position: relative;
+  height: 100vh; height: 100dvh;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  background: var(--color-bg);
+}
+.desk-stage {
+  position: relative;
+  min-height: 100vh;
+  background: var(--color-bg);
+}
 
 /* the scrollable app body */
 .scroll {
@@ -345,3 +368,30 @@ button { font-family: inherit; }
   .click:hover > .lead-link, .lead-link:hover { color: #C77DFF; }
 }
 .lift { transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease; }
+
+/* modal entrance (desktop dialog) */
+@keyframes modalIn { from { opacity: 0; transform: translateY(14px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.modal-in { animation: modalIn 0.24s cubic-bezier(.3,.8,.3,1); }
+
+/* sidebar nav hover (desktop) */
+.nav-item:hover[data-active="false"] { background: rgba(255,255,255,0.06) !important; color: #fff !important; }
+
+/* ============================================================
+   Desktop overrides (≥ 1024px) — larger type + visible scrollbars
+   ============================================================ */
+@media (min-width: 1024px) {
+  body { font-size: 14px; line-height: 1.6; }
+  h1 { font-size: 32px; letter-spacing: -0.01em; }
+  h2 { font-size: 24px; }
+  h3 { font-size: 18px; }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.24); background-clip: content-box; }
+}

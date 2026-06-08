@@ -108,4 +108,4 @@ function LoginScreen() {
   );
 }
 
-window.LoginScreen = LoginScreen;
+window.LoginScreenD = LoginScreen;

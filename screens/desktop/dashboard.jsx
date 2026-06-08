@@ -168,4 +168,4 @@ function DashboardScreen({ user }) {
   );
 }
 
-window.DashboardScreen = DashboardScreen;
+window.DashboardScreenD = DashboardScreen;

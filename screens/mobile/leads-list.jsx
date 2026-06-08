@@ -146,7 +146,7 @@ function LeadsScreen({ user }) {
           )}
         </div>
       ) : (
-        <LeadsKanban leads={filtered} setStatus={setStatus} onOpen={setSlideId} toast={toast} />
+        <LeadsKanbanM leads={filtered} setStatus={setStatus} onOpen={setSlideId} toast={toast} />
       )}
 
       <FAB icon="plus" label="Nowy lead" onClick={() => setNewOpen(true)} />
@@ -154,8 +154,8 @@ function LeadsScreen({ user }) {
       <FilterSheet open={filterOpen} onClose={() => setFilterOpen(false)} statusFilter={statusFilter} toggleStatus={toggleStatus}
         assignFilter={assignFilter} setAssignFilter={setAssignFilter}
         onClear={() => { setStatusFilter([]); setAssignFilter(null); }} />
-      <NewLeadModal open={newOpen} onClose={() => setNewOpen(false)} onCreate={() => { setNewOpen(false); toast('Lead utworzony'); }} />
-      <LeadSlideOver id={slideId} onClose={() => setSlideId(null)} nav={nav} />
+      <NewLeadModalM open={newOpen} onClose={() => setNewOpen(false)} onCreate={() => { setNewOpen(false); toast('Lead utworzony'); }} />
+      <LeadSlideOverM id={slideId} onClose={() => setSlideId(null)} nav={nav} />
       {/* per-lead action sheet */}
       <BottomSheet open={!!menuLead} onClose={() => setMenuLead(null)} title={menuLead ? menuLead.name : ''}>
         {menuLead && (
@@ -191,5 +191,5 @@ function ActionRow({ icon, label, onClick, danger }) {
   );
 }
 
-window.LeadsScreen = LeadsScreen;
+window.LeadsScreenM = LeadsScreen;
 window.ActionRow = ActionRow;

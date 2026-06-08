@@ -76,4 +76,4 @@ function FormsScreen() {
   );
 }
 
-window.FormsScreen = FormsScreen;
+window.FormsScreenM = FormsScreen;
