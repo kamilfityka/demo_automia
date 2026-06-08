@@ -70,13 +70,17 @@
   }));
 
   function buildAnswers(r) {
+    const machines = ['Kiosk piekarniczy 24/7', 'Automat z gotowymi posiłkami', 'Automat z kosmetykami', 'Automat z suplementami', 'Automat z produktami spożywczymi'];
+    const places = ['Piekarnia / sklep', 'Biurowiec', 'Stacja paliw', 'Galeria / centrum handlowe', 'Inna'];
     return [
       { label: 'Imię i nazwisko', value: r[0] },
       { label: 'Firma', value: r[1] },
       { label: 'Email', value: r[2] },
       { label: 'Telefon', value: r[3] },
-      { label: 'Budżet', value: ['do 10 tys. zł', '10–50 tys. zł', '50–100 tys. zł', 'powyżej 100 tys. zł'][r[0].length % 4] },
-      { label: 'Wiadomość', value: 'Dzień dobry, jesteśmy zainteresowani wdrożeniem automatyzacji procesów sprzedażowych. Proszę o kontakt i przygotowanie wstępnej wyceny.' },
+      { label: 'Interesujący automat', value: machines[r[0].length % machines.length] },
+      { label: 'Planowana lokalizacja', value: places[r[1].length % places.length] },
+      { label: 'Orientacyjny budżet', value: ['do 10 tys. zł', '10–50 tys. zł', '50–100 tys. zł', 'powyżej 100 tys. zł'][r[1].length % 4] },
+      { label: 'Wiadomość', value: 'Dzień dobry, jesteśmy zainteresowani ustawieniem automatu samoobsługowego w naszej lokalizacji. Proszę o kontakt i przygotowanie oferty.' },
     ];
   }
 
@@ -131,9 +135,10 @@
     { id: 'b4', type: 'phone',    label: 'Telefon', placeholder: '+48 600 000 000', required: false, help: '' },
     { id: 'b5', type: 'text',     label: 'Firma / Organizacja', placeholder: 'Nazwa firmy', required: false, help: '' },
     { id: 'b6', type: 'section',  label: 'Szczegóły zapytania', required: false },
-    { id: 'b7', type: 'select',   label: 'Interesuje mnie', required: true, options: ['Automatyzacja sprzedaży', 'Integracja CRM', 'Wdrożenie MedusaJS', 'Konsultacja'], help: '' },
-    { id: 'b8', type: 'select',   label: 'Budżet', required: false, options: ['do 10 tys. zł', '10–50 tys. zł', '50–100 tys. zł', 'powyżej 100 tys. zł'], help: '' },
-    { id: 'b9', type: 'textarea', label: 'Wiadomość', placeholder: 'Opisz swoje potrzeby...', required: false, help: '' },
+    { id: 'b7', type: 'select',   label: 'Interesujący automat', required: true, options: ['Kiosk piekarniczy 24/7', 'Automat z gotowymi posiłkami', 'Automat z kosmetykami', 'Automat z suplementami', 'Automat z produktami spożywczymi', 'Inny / jeszcze nie wiem'], help: '' },
+    { id: 'b10', type: 'radio',   label: 'Planowana lokalizacja', required: false, options: ['Piekarnia / sklep', 'Biurowiec', 'Stacja paliw', 'Galeria / centrum handlowe', 'Inna'], help: '' },
+    { id: 'b8', type: 'select',   label: 'Orientacyjny budżet', required: false, options: ['do 10 tys. zł', '10–50 tys. zł', '50–100 tys. zł', 'powyżej 100 tys. zł'], help: '' },
+    { id: 'b9', type: 'textarea', label: 'Wiadomość', placeholder: 'Opisz, czego potrzebujesz (lokalizacja, asortyment, liczba automatów)...', required: false, help: '' },
   ];
 
   // status counts for chart
