@@ -45,8 +45,8 @@ function FormsScreen() {
                   {/* url */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.05)', border: '1px solid var(--color-border)', borderRadius: 50, padding: '5px 5px 5px 14px' }}>
                     <Icon name="link" size={13} style={{ color: 'var(--color-text-muted)', flexShrink: 0 }} />
-                    <span className="muted trunc" style={{ fontSize: 12.5, flex: 1 }}>leadbase.app/f/{f.slug}</span>
-                    <CopyButton value={`https://leadbase.app/f/${f.slug}`} size={34} />
+                    <span className="muted trunc" style={{ fontSize: 12.5, flex: 1 }}>automnia.pl/f/{f.slug}</span>
+                    <CopyButton value={`https://automnia.pl/f/${f.slug}`} size={34} />
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

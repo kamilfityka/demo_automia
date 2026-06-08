@@ -187,11 +187,11 @@ function FormSettings({ name, setName, slug, setSlug }) {
         <div className="divider" />
         <div>
           <label className="field-label">Autoresponder — temat</label>
-          <input className="input" defaultValue="Potwierdzenie zgłoszenia — AutomiaCRM" />
+          <input className="input" defaultValue="Potwierdzenie zgłoszenia — Automnia" />
         </div>
         <div>
           <label className="field-label">Autoresponder — treść</label>
-          <textarea className="textarea" defaultValue={"Cześć {{imię}},\n\ndziękujemy za kontakt. Otrzymaliśmy Twoje zgłoszenie z adresu {{email}} i wrócimy z odpowiedzią najszybciej jak to możliwe.\n\nPozdrawiamy,\nZespół AutomiaCRM"} style={{ minHeight: 140 }} />
+          <textarea className="textarea" defaultValue={"Cześć {{imię}},\n\ndziękujemy za kontakt. Otrzymaliśmy Twoje zgłoszenie z adresu {{email}} i wrócimy z odpowiedzią najszybciej jak to możliwe.\n\nPozdrawiamy,\nZespół Automnia"} style={{ minHeight: 140 }} />
           <div className="field-help">Dostępne: {'{{imię}}'}, {'{{email}}'}</div>
         </div>
         <div>

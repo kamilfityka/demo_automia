@@ -30,8 +30,8 @@ function LoginScreen() {
               boxShadow: '0 8px 24px rgba(155,64,224,0.45)',
             }}><Icon name="sparkles" size={23} stroke={2.2} /></span>
             <div style={{ lineHeight: 1.1 }}>
-              <div style={{ fontFamily: 'var(--font-head)', fontWeight: 800, fontSize: 20 }}>LeadBase</div>
-              <div className="muted" style={{ fontSize: 12, fontWeight: 500 }}>by AutomiaCRM</div>
+              <div style={{ fontFamily: 'var(--font-head)', fontWeight: 800, fontSize: 20 }}>Automnia</div>
+              <div className="muted" style={{ fontSize: 12, fontWeight: 500 }}>Panel zgłoszeń</div>
             </div>
           </div>
 
@@ -90,8 +90,8 @@ function LoginScreen() {
               <div key={i} style={{ background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 50, padding: '7px 16px', fontSize: 13, fontWeight: 600, backdropFilter: 'blur(8px)' }}>{s}</div>
             ))}
           </div>
-          <h2 style={{ fontSize: 38, fontWeight: 800, lineHeight: 1.12, maxWidth: 460, marginBottom: 18 }}>Zbieraj i obsługuj leady w jednym miejscu.</h2>
-          <p style={{ fontSize: 16, lineHeight: 1.6, maxWidth: 440, opacity: 0.92 }}>Formularze, kanban, automatyczne przypisania i pełna historia każdego zgłoszenia — wszystko w panelu LeadBase.</p>
+          <h2 style={{ fontSize: 38, fontWeight: 800, lineHeight: 1.12, maxWidth: 460, marginBottom: 18 }}>Zgłoszenia o automaty samoobsługowe w jednym miejscu.</h2>
+          <p style={{ fontSize: 16, lineHeight: 1.6, maxWidth: 440, opacity: 0.92 }}>Formularz zgłoszeniowy, przypisania do zespołu i pełna historia każdego zapytania — wszystko w panelu Automnia.</p>
         </div>
       </div>
 

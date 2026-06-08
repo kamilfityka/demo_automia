@@ -1,5 +1,5 @@
 /* ============================================================
-   AutomiaCRM — mock data (Polish, realistic)
+   Automnia — mock data (Polish, realistic)
    Exposed on window.DB
    ============================================================ */
 (function () {
@@ -23,7 +23,7 @@
   ];
 
   let forms = [
-    { id: 'f1', name: 'Formularz zgłoszeniowy', slug: 'zgloszenie', desc: 'Główny formularz zgłoszeń od resellerów i klientów', responses: 24, active: true, created: '2025-11-03', partner: null, assignTo: 'u2' },
+    { id: 'f1', name: 'Zapytanie o automat samoobsługowy', slug: 'zapytanie', desc: 'Zgłoszenia i zapytania o automaty vendingowe oraz kioski samoobsługowe', responses: 24, active: true, created: '2025-11-03', partner: null, assignTo: 'u2' },
   ];
 
   // leads — realistic Polish companies
@@ -151,7 +151,7 @@
      so a PoC survives page reloads. Swapping this block for a
      real backend later only touches the methods below.
      ============================================================ */
-  const LS_KEY = 'leadbase.db.v2';
+  const LS_KEY = 'automnia.db.v1';
   let notes = {};                 // { [leadId]: [{ user, text, time, ts }] }
   let seq = { lead: 25, form: 2, user: 7 };
 

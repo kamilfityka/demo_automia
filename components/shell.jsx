@@ -252,8 +252,8 @@ function Sidebar({ user }) {
           boxShadow: '0 6px 18px rgba(155,64,224,0.45)',
         }}><Icon name="sparkles" size={20} stroke={2.2} /></span>
         <div style={{ lineHeight: 1.1 }}>
-          <div style={{ fontFamily: 'var(--font-head)', fontWeight: 800, fontSize: 17, letterSpacing: '-0.02em' }}>LeadBase</div>
-          <div className="muted" style={{ fontSize: 11, fontWeight: 500 }}>by AutomiaCRM</div>
+          <div style={{ fontFamily: 'var(--font-head)', fontWeight: 800, fontSize: 17, letterSpacing: '-0.02em' }}>Automnia</div>
+          <div className="muted" style={{ fontSize: 11, fontWeight: 500 }}>Panel zgłoszeń</div>
         </div>
       </div>
 
