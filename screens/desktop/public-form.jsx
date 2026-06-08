@@ -42,9 +42,8 @@ function PublicFormScreen({ slug }) {
 
       <div style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '48px 24px 64px' }}>
         {/* logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 40 }}>
-          <span style={{ width: 40, height: 40, borderRadius: 13, background: 'var(--gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(155,64,224,0.45)' }}><Icon name="sparkles" size={21} stroke={2.2} /></span>
-          <span style={{ fontFamily: 'var(--font-head)', fontWeight: 800, fontSize: 19 }}>Automnia</span>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 40 }}>
+          <img src="assets/Automnia.svg" alt="Automnia" style={{ height: 34, display: 'block' }} />
         </div>
 
         <div style={{ width: '100%', maxWidth: 640 }}>

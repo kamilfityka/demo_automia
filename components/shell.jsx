@@ -245,16 +245,9 @@ function Sidebar({ user }) {
       background: 'var(--color-bg-surface)', borderRight: '1px solid var(--color-border)',
       display: 'flex', flexDirection: 'column', padding: '24px 16px',
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 11, padding: '4px 10px 24px' }}>
-        <span style={{
-          width: 38, height: 38, borderRadius: 12, background: 'var(--gradient)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-          boxShadow: '0 6px 18px rgba(155,64,224,0.45)',
-        }}><Icon name="sparkles" size={20} stroke={2.2} /></span>
-        <div style={{ lineHeight: 1.1 }}>
-          <div style={{ fontFamily: 'var(--font-head)', fontWeight: 800, fontSize: 17, letterSpacing: '-0.02em' }}>Automnia</div>
-          <div className="muted" style={{ fontSize: 11, fontWeight: 500 }}>Panel resellera</div>
-        </div>
+      <div style={{ padding: '4px 10px 24px' }}>
+        <img src="assets/Automnia.svg" alt="Automnia" style={{ height: 28, display: 'block' }} />
+        <div className="muted" style={{ fontSize: 11, fontWeight: 500, marginTop: 6 }}>Panel resellera</div>
       </div>
 
       <nav style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1, overflowY: 'auto' }}>
