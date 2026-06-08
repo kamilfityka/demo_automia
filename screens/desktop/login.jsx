@@ -72,16 +72,11 @@ function LoginScreen() {
         </div>
       </div>
 
-      {/* right — brand panel */}
-      <div style={{ flex: '1 1 50%', position: 'relative', overflow: 'hidden', padding: 56, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 36 }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'var(--gradient)', opacity: 0.92 }} />
-        <div style={{ position: 'absolute', top: -120, right: -80, width: 420, height: 420, borderRadius: '50%', background: 'rgba(255,255,255,0.16)', filter: 'blur(40px)' }} />
-        <div style={{ position: 'absolute', bottom: -140, left: -60, width: 360, height: 360, borderRadius: '50%', background: 'rgba(26,21,96,0.5)', filter: 'blur(50px)' }} />
-
-        {/* Zdjęcie automatów */}
-        <div style={{ position: 'relative', width: '100%', maxWidth: 480, aspectRatio: '16 / 10', borderRadius: 24, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.35)', boxShadow: '0 24px 70px rgba(0,0,0,0.35)' }}>
-          <img src="assets/automaty.png" alt="Automaty samoobsługowe Automnia" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-        </div>
+      {/* right — full-bleed photo with overlaid copy */}
+      <div style={{ flex: '1 1 50%', position: 'relative', overflow: 'hidden', padding: 56, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', background: 'var(--gradient)' }}>
+        <img src="assets/automaty.png" alt="Automaty samoobsługowe Automnia" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+        {/* scrim for legibility of the overlaid text */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,8,40,0.92) 0%, rgba(10,8,40,0.55) 34%, rgba(10,8,40,0.08) 68%)' }} />
 
         <div style={{ position: 'relative' }}>
           <div style={{ display: 'flex', gap: 10, marginBottom: 22 }}>
