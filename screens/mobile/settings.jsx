@@ -6,8 +6,22 @@ function UsersScreen() {
   const toast = useToast();
   const [users, setUsers] = React.useState(window.DB.users);
   const [addOpen, setAddOpen] = React.useState(false);
+  const [form, setForm] = React.useState({ name: '', email: '', role: 'partner' });
+  React.useEffect(() => { if (addOpen) setForm({ name: '', email: '', role: 'partner' }); }, [addOpen]);
+  const up = (k) => (e) => setForm(s => ({ ...s, [k]: e.target.value }));
 
-  const toggleStatus = (id) => setUsers(u => u.map(x => x.id === id ? { ...x, status: x.status === 'aktywny' ? 'nieaktywny' : 'aktywny' } : x));
+  const toggleStatus = (id) => {
+    const u = window.DB.userById(id);
+    window.DB.updateUser(id, { status: u.status === 'aktywny' ? 'nieaktywny' : 'aktywny' });
+    setUsers(window.DB.users);
+  };
+  const createUser = () => {
+    if (!form.name.trim() || !form.email.trim()) return;
+    window.DB.addUser({ name: form.name.trim(), email: form.email.trim(), role: form.role });
+    setUsers(window.DB.users);
+    setAddOpen(false);
+    toast(form.role === 'partner' ? 'Reseller dodany' : 'Użytkownik dodany');
+  };
 
   return (
     <>
@@ -40,32 +54,28 @@ function UsersScreen() {
 
       <FAB icon="plus" label="Dodaj użytkownika" onClick={() => setAddOpen(true)} />
 
-      <Modal open={addOpen} onClose={() => setAddOpen(false)} title="Dodaj użytkownika"
+      <Modal open={addOpen} onClose={() => setAddOpen(false)} title="Dodaj użytkownika / resellera"
         footer={<>
           <button className="btn btn-ghost" style={{ flex: 1 }} onClick={() => setAddOpen(false)}>Anuluj</button>
-          <button className="btn btn-primary" style={{ flex: 1.4 }} onClick={() => { setAddOpen(false); toast('Zaproszenie wysłane'); }}><Icon name="send" size={16} /> Wyślij</button>
+          <button className="btn btn-primary" style={{ flex: 1.4 }} onClick={createUser} disabled={!form.name.trim() || !form.email.trim()}><Icon name="check" size={16} /> Dodaj</button>
         </>}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 15, paddingBottom: 4 }}>
           <div>
-            <label className="field-label">Imię i nazwisko</label>
-            <input className="input" placeholder="Jan Kowalski" />
+            <label className="field-label">Imię i nazwisko *</label>
+            <input className="input" placeholder="Jan Kowalski" value={form.name} onChange={up('name')} />
           </div>
           <div>
-            <label className="field-label">Email</label>
-            <input className="input" type="email" placeholder="jan@automnia.pl" />
+            <label className="field-label">Email *</label>
+            <input className="input" type="email" placeholder="jan@firma.pl" value={form.email} onChange={up('email')} />
           </div>
           <div>
             <label className="field-label">Rola</label>
-            <select className="select-native" defaultValue="agent">
-              <option value="admin">Admin</option>
+            <select className="select-native" value={form.role} onChange={up('role')}>
+              <option value="partner">Partner / Reseller</option>
               <option value="agent">Handlowiec</option>
-              <option value="partner">Partner</option>
+              <option value="admin">Admin</option>
             </select>
           </div>
-          <label className="click" style={{ display: 'flex', alignItems: 'center', gap: 11, marginTop: 2 }}>
-            <span style={{ width: 22, height: 22, borderRadius: 7, background: 'var(--gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Icon name="check" size={14} stroke={3} /></span>
-            <span style={{ fontSize: 13.5 }} className="soft">Wyślij email z linkiem do ustawienia hasła</span>
-          </label>
         </div>
       </Modal>
     </>
