@@ -31,7 +31,7 @@ function LoginScreen() {
             }}><Icon name="sparkles" size={23} stroke={2.2} /></span>
             <div style={{ lineHeight: 1.1 }}>
               <div style={{ fontFamily: 'var(--font-head)', fontWeight: 800, fontSize: 20 }}>Automnia</div>
-              <div className="muted" style={{ fontSize: 12, fontWeight: 500 }}>Panel zgłoszeń</div>
+              <div className="muted" style={{ fontSize: 12, fontWeight: 500 }}>Panel resellera</div>
             </div>
           </div>
 

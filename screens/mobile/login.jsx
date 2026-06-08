@@ -29,7 +29,7 @@ function LoginScreen() {
             <span style={{ width: 42, height: 42, borderRadius: 13, background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}><Icon name="sparkles" size={21} stroke={2.2} /></span>
             <div style={{ lineHeight: 1.1 }}>
               <div style={{ fontFamily: 'var(--font-head)', fontWeight: 800, fontSize: 19 }}>Automnia</div>
-              <div style={{ fontSize: 12, fontWeight: 500, opacity: 0.85 }}>Panel zgłoszeń</div>
+              <div style={{ fontSize: 12, fontWeight: 500, opacity: 0.85 }}>Panel resellera</div>
             </div>
           </div>
           <h1 style={{ fontSize: 26, lineHeight: 1.18, maxWidth: 320 }}>Zgłoszenia o automaty samoobsługowe w jednym miejscu.</h1>

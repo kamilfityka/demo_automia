@@ -253,7 +253,7 @@ function Sidebar({ user }) {
         }}><Icon name="sparkles" size={20} stroke={2.2} /></span>
         <div style={{ lineHeight: 1.1 }}>
           <div style={{ fontFamily: 'var(--font-head)', fontWeight: 800, fontSize: 17, letterSpacing: '-0.02em' }}>Automnia</div>
-          <div className="muted" style={{ fontSize: 11, fontWeight: 500 }}>Panel zgłoszeń</div>
+          <div className="muted" style={{ fontSize: 11, fontWeight: 500 }}>Panel resellera</div>
         </div>
       </div>
 
