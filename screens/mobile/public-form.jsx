@@ -113,4 +113,4 @@ function PublicField({ field, value, error, onChange }) {
   return <input type={t === 'email' ? 'email' : t === 'phone' ? 'tel' : 'text'} className={cls} placeholder={field.placeholder} value={value || ''} onChange={e => onChange(e.target.value)} />;
 }
 
-window.PublicFormScreen = PublicFormScreen;
+window.PublicFormScreenM = PublicFormScreen;

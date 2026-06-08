@@ -288,4 +288,4 @@ function FormSettings({ name, setName, slug, setSlug }) {
   );
 }
 
-window.FormBuilderScreen = FormBuilderScreen;
+window.FormBuilderScreenD = FormBuilderScreen;

@@ -120,10 +120,10 @@ function LeadsScreen({ user }) {
             SortHead={SortHead} nav={nav} setStatus={setStatus} toast={toast}
             page={page} setPage={setPage} pageCount={pageCount} perPage={perPage} setPerPage={setPerPage}
             setSelected={setSelected} />
-        : <LeadsKanban leads={filtered} setStatus={setStatus} onOpen={setSlideId} toast={toast} />}
+        : <LeadsKanbanD leads={filtered} setStatus={setStatus} onOpen={setSlideId} toast={toast} />}
 
-      <NewLeadModal open={newOpen} onClose={() => setNewOpen(false)} onCreate={() => { setNewOpen(false); toast('Lead utworzony'); }} />
-      <LeadSlideOver id={slideId} onClose={() => setSlideId(null)} nav={nav} />
+      <NewLeadModalD open={newOpen} onClose={() => setNewOpen(false)} onCreate={() => { setNewOpen(false); toast('Lead utworzony'); }} />
+      <LeadSlideOverD id={slideId} onClose={() => setSlideId(null)} nav={nav} />
     </>
   );
 }
@@ -229,4 +229,4 @@ function Checkbox({ checked, onChange }) {
   );
 }
 
-window.LeadsScreen = LeadsScreen;
+window.LeadsScreenD = LeadsScreen;

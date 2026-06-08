@@ -81,4 +81,4 @@ function FormsScreen() {
   );
 }
 
-window.FormsScreen = FormsScreen;
+window.FormsScreenD = FormsScreen;

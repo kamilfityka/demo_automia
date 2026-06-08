@@ -206,4 +206,4 @@ function ActivityItem({ item, first }) {
   );
 }
 
-window.LeadDetailScreen = LeadDetailScreen;
+window.LeadDetailScreenD = LeadDetailScreen;

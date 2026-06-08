@@ -148,4 +148,4 @@ function AccountScreen({ user }) {
   );
 }
 
-Object.assign(window, { UsersScreen, AccountScreen });
+Object.assign(window, { UsersScreenD: UsersScreen, AccountScreenD: AccountScreen });

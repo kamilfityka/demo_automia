@@ -1,7 +1,10 @@
 /* ============================================================
-   UI primitives (MOBILE-FIRST)
+   UI primitives (RESPONSIVE)
+   One set of primitives that adapt to the viewport:
+   · phones      → bottom sheets, action sheets, in-app toasts
+   · desktops    → centered modals, dropdown menus, right drawers
    Avatar · Badges · Toasts · BottomSheet · Modal · SlideOver
-   · Menu (action sheet) · FAB · EmptyState · Segmented · Toggle
+   · Menu · FAB · EmptyState · Segmented · Toggle · Checkbox
    ============================================================ */
 
 function initials(name) {
@@ -39,7 +42,7 @@ function RoleBadge({ role }) {
   return <span className={`badge ${cls}`}>{label}</span>;
 }
 
-/* ---------- Bottom sheet (core overlay) ---------- */
+/* ---------- Bottom sheet (mobile core overlay) ---------- */
 function BottomSheet({ open, onClose, title, children, footer, height }) {
   React.useEffect(() => {
     if (!open) return;
@@ -66,8 +69,41 @@ function BottomSheet({ open, onClose, title, children, footer, height }) {
   );
 }
 
-/* ---------- Modal — renders as a bottom sheet on the phone ---------- */
-function Modal({ open, onClose, title, children, footer }) {
+/* ---------- Modal — dialog on desktop, bottom sheet on phones ---------- */
+function Modal({ open, onClose, title, children, footer, width = 480 }) {
+  const isDesktop = useIsDesktop();
+  React.useEffect(() => {
+    if (!open) return;
+    const h = e => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, [open, onClose]);
+
+  if (isDesktop) {
+    if (!open) return null;
+    return (
+      <div onMouseDown={onClose} style={{
+        position: 'fixed', inset: 0, zIndex: 8000,
+        background: 'rgba(10, 8, 40, 0.6)', backdropFilter: 'blur(6px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24,
+      }}>
+        <div className="modal-in" onMouseDown={e => e.stopPropagation()} style={{
+          width, maxWidth: '100%', maxHeight: '88vh', overflow: 'hidden',
+          background: 'var(--color-bg-surface)',
+          border: '1px solid var(--color-border)', borderRadius: 24,
+          boxShadow: 'var(--shadow-pop)', display: 'flex', flexDirection: 'column',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '22px 26px 16px' }}>
+            <h3 style={{ fontSize: 19 }}>{title}</h3>
+            <button className="btn-icon" onClick={onClose} style={{ width: 34, height: 34 }}><Icon name="x" size={18} /></button>
+          </div>
+          <div style={{ padding: '0 26px 8px', overflowY: 'auto' }}>{children}</div>
+          {footer && <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, padding: '18px 26px 24px' }}>{footer}</div>}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <BottomSheet open={open} onClose={onClose} title={title} footer={footer}>
       <div style={{ paddingTop: 2 }}>{children}</div>
@@ -75,14 +111,33 @@ function Modal({ open, onClose, title, children, footer }) {
   );
 }
 
-/* ---------- SlideOver — tall sheet that hosts its own header/footer ---------- */
-function SlideOver({ open, onClose, children }) {
+/* ---------- SlideOver — right drawer on desktop, tall sheet on phones ---------- */
+function SlideOver({ open, onClose, children, width = 460 }) {
+  const isDesktop = useIsDesktop();
   React.useEffect(() => {
     if (!open) return;
     const h = e => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', h);
     return () => window.removeEventListener('keydown', h);
   }, [open, onClose]);
+
+  if (isDesktop) {
+    return (
+      <div style={{ position: 'fixed', inset: 0, zIndex: 7500, pointerEvents: open ? 'auto' : 'none' }}>
+        <div onClick={onClose} style={{
+          position: 'absolute', inset: 0, background: 'rgba(10,8,40,0.55)', backdropFilter: 'blur(4px)',
+          opacity: open ? 1 : 0, transition: 'opacity 0.25s ease',
+        }} />
+        <div style={{
+          position: 'absolute', top: 0, right: 0, bottom: 0, width, maxWidth: '94vw',
+          background: 'var(--color-bg-surface)', borderLeft: '1px solid var(--color-border)',
+          boxShadow: 'var(--shadow-pop)', transform: open ? 'translateX(0)' : 'translateX(100%)',
+          transition: 'transform 0.28s cubic-bezier(.4,.8,.3,1)', display: 'flex', flexDirection: 'column',
+        }}>{children}</div>
+      </div>
+    );
+  }
+
   if (!open) return null;
   return (
     <OverlayPortal>
@@ -100,47 +155,98 @@ const ToastCtx = React.createContext(() => {});
 function useToast() { return React.useContext(ToastCtx); }
 
 function ToastProvider({ children }) {
+  const isDesktop = useIsDesktop();
   const [toasts, setToasts] = React.useState([]);
   const push = React.useCallback((msg, kind = 'success') => {
     const id = Math.random().toString(36).slice(2);
     setToasts(t => [...t, { id, msg, kind }]);
-    setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), 3600);
+    setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), 3800);
   }, []);
+
+  const ToastCard = ({ t, minWidth }) => (
+    <div key={t.id} className="toast-in" style={{
+      display: 'flex', alignItems: 'center', gap: 12, pointerEvents: 'auto',
+      background: 'var(--color-bg-elevated)',
+      border: `1px solid ${t.kind === 'error' ? 'rgba(255,77,77,0.5)' : 'rgba(54,179,126,0.5)'}`,
+      borderRadius: isDesktop ? 14 : 16, padding: isDesktop ? '14px 18px' : '13px 16px',
+      minWidth, maxWidth: isDesktop ? 380 : undefined,
+      boxShadow: 'var(--shadow-pop)', color: '#fff', fontSize: 14, fontWeight: 500,
+    }}>
+      <span style={{
+        width: 30, height: 30, borderRadius: '50%', flexShrink: 0,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: t.kind === 'error' ? 'rgba(255,77,77,0.2)' : 'rgba(54,179,126,0.2)',
+        color: t.kind === 'error' ? '#FF8080' : '#57E8A8',
+      }}><Icon name={t.kind === 'error' ? 'x' : 'check'} size={16} /></span>
+      <span style={{ lineHeight: 1.4 }}>{t.msg}</span>
+    </div>
+  );
+
   return (
     <ToastCtx.Provider value={push}>
       {children}
-      {toasts.length > 0 && (
+      {isDesktop ? (
+        <div style={{ position: 'fixed', right: 24, bottom: 24, zIndex: 9000, display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-end' }}>
+          {toasts.map(t => <ToastCard key={t.id} t={t} minWidth={260} />)}
+        </div>
+      ) : (toasts.length > 0 && (
         <OverlayPortal>
           <div style={{
             position: 'absolute', left: 14, right: 14, bottom: 'calc(var(--nav-h) + var(--safe-bottom) + 14px)',
             zIndex: 300, display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'stretch', pointerEvents: 'none',
           }}>
-            {toasts.map(t => (
-              <div key={t.id} className="toast-in" style={{
-                display: 'flex', alignItems: 'center', gap: 12, pointerEvents: 'auto',
-                background: 'var(--color-bg-elevated)',
-                border: `1px solid ${t.kind === 'error' ? 'rgba(255,77,77,0.5)' : 'rgba(54,179,126,0.5)'}`,
-                borderRadius: 16, padding: '13px 16px', boxShadow: 'var(--shadow-pop)', color: '#fff', fontSize: 14, fontWeight: 500,
-              }}>
-                <span style={{
-                  width: 30, height: 30, borderRadius: '50%', flexShrink: 0,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  background: t.kind === 'error' ? 'rgba(255,77,77,0.2)' : 'rgba(54,179,126,0.2)',
-                  color: t.kind === 'error' ? '#FF8080' : '#57E8A8',
-                }}><Icon name={t.kind === 'error' ? 'x' : 'check'} size={16} /></span>
-                <span style={{ lineHeight: 1.35 }}>{t.msg}</span>
-              </div>
-            ))}
+            {toasts.map(t => <ToastCard key={t.id} t={t} />)}
           </div>
         </OverlayPortal>
-      )}
+      ))}
     </ToastCtx.Provider>
   );
 }
 
-/* ---------- Menu — opens an action sheet ---------- */
-function Menu({ trigger, items, title }) {
+/* ---------- Menu — dropdown on desktop, action sheet on phones ---------- */
+function Menu({ trigger, items, title, align = 'right' }) {
+  const isDesktop = useIsDesktop();
   const [open, setOpen] = React.useState(false);
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    if (!isDesktop) return;
+    const h = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
+  }, [isDesktop]);
+
+  if (isDesktop) {
+    return (
+      <div ref={ref} style={{ position: 'relative', display: 'inline-flex' }}>
+        <span onClick={e => { e.stopPropagation(); setOpen(o => !o); }}>{trigger}</span>
+        {open && (
+          <div className="menu-in" style={{
+            position: 'absolute', top: 'calc(100% + 6px)', [align]: 0, zIndex: 100,
+            background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)',
+            borderRadius: 14, boxShadow: 'var(--shadow-pop)', padding: 6, minWidth: 180,
+          }}>
+            {items.map((it, i) => it.divider ? (
+              <div key={i} className="divider" style={{ margin: '6px 4px' }} />
+            ) : (
+              <button key={i} onClick={e => { e.stopPropagation(); setOpen(false); it.onClick && it.onClick(); }}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 10, width: '100%',
+                  padding: '9px 12px', borderRadius: 9, border: 'none', cursor: 'pointer',
+                  background: 'transparent', color: it.danger ? '#FF8080' : 'var(--color-text-soft)',
+                  fontSize: 13.5, fontFamily: 'var(--font-body)', textAlign: 'left',
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.07)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                {it.icon && <Icon name={it.icon} size={15} />}
+                {it.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <>
       <span onClick={e => { e.stopPropagation(); setOpen(true); }}>{trigger}</span>
@@ -168,7 +274,7 @@ function Menu({ trigger, items, title }) {
   );
 }
 
-/* ---------- Floating action button ---------- */
+/* ---------- Floating action button (phones) ---------- */
 function FAB({ icon = 'plus', onClick, hasNav = true, label }) {
   return (
     <OverlayPortal>
@@ -182,13 +288,13 @@ function FAB({ icon = 'plus', onClick, hasNav = true, label }) {
 /* ---------- Empty state ---------- */
 function EmptyState({ icon = 'inbox', title, text, action }) {
   return (
-    <div style={{ textAlign: 'center', padding: '52px 22px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14 }}>
+    <div style={{ textAlign: 'center', padding: '56px 22px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14 }}>
       <div style={{
-        width: 72, height: 72, borderRadius: 22, display: 'flex', alignItems: 'center', justifyContent: 'center',
+        width: 74, height: 74, borderRadius: 22, display: 'flex', alignItems: 'center', justifyContent: 'center',
         background: 'var(--gradient-soft)', border: '1px solid var(--color-border)', color: '#C77DFF',
-      }}><Icon name={icon} size={30} /></div>
+      }}><Icon name={icon} size={31} /></div>
       <h3 style={{ fontSize: 18 }}>{title}</h3>
-      <p className="muted" style={{ maxWidth: 320, fontSize: 14 }}>{text}</p>
+      <p className="muted" style={{ maxWidth: 360, fontSize: 14 }}>{text}</p>
       {action}
     </div>
   );
@@ -213,15 +319,21 @@ function CopyButton({ value, size = 38 }) {
 
 /* ---------- Segmented control ---------- */
 function Segmented({ value, options, onChange, full }) {
+  const isDesktop = useIsDesktop();
   return (
-    <div style={{ display: 'flex', padding: 4, gap: 4, borderRadius: 50, background: 'rgba(255,255,255,0.06)', border: '1px solid var(--color-border)', width: full ? '100%' : undefined }}>
+    <div style={{
+      display: full ? 'flex' : 'inline-flex', padding: 4, gap: 4, borderRadius: 50,
+      background: 'rgba(255,255,255,0.06)', border: '1px solid var(--color-border)', width: full ? '100%' : undefined,
+    }}>
       {options.map(o => {
         const active = o.value === value;
         return (
           <button key={o.value} onClick={() => onChange(o.value)} style={{
             flex: full ? 1 : undefined,
-            display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, height: 38, padding: '0 16px',
-            borderRadius: 50, border: 'none', cursor: 'pointer', fontFamily: 'var(--font-head)', fontWeight: 600, fontSize: 14,
+            display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7,
+            height: isDesktop ? 34 : 38, padding: '0 16px',
+            borderRadius: 50, border: 'none', cursor: 'pointer', fontFamily: 'var(--font-head)', fontWeight: 600,
+            fontSize: isDesktop ? 13.5 : 14,
             background: active ? 'var(--gradient)' : 'transparent',
             color: active ? '#fff' : 'var(--color-text-muted)',
             boxShadow: active ? '0 4px 14px rgba(155,64,224,0.4)' : 'none', transition: 'all 0.18s ease',
