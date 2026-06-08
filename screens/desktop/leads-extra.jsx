@@ -75,38 +75,46 @@ function LeadsKanban({ leads, setStatus, onOpen, toast }) {
 
 /* ---------- New lead modal ---------- */
 function NewLeadModal({ open, onClose, onCreate }) {
+  const blank = { name: '', email: '', phone: '', company: '', status: 'nowy', assignedTo: 'u2' };
+  const [f, setF] = React.useState(blank);
+  React.useEffect(() => { if (open) setF(blank); }, [open]);
+  const up = (k) => (e) => setF(s => ({ ...s, [k]: e.target.value }));
+  const create = () => {
+    if (!f.name.trim() || !f.email.trim()) return;
+    onCreate(f);
+  };
   return (
     <Modal open={open} onClose={onClose} title="Nowy lead" width={520}
       footer={<>
         <button className="btn btn-ghost btn-sm" onClick={onClose}>Anuluj</button>
-        <button className="btn btn-primary btn-sm" onClick={onCreate}><Icon name="check" size={16} /> Utwórz lead</button>
+        <button className="btn btn-primary btn-sm" onClick={create} disabled={!f.name.trim() || !f.email.trim()}><Icon name="check" size={16} /> Utwórz lead</button>
       </>}>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, paddingBottom: 6 }}>
         <div style={{ gridColumn: '1 / -1' }}>
           <label className="field-label">Imię i nazwisko *</label>
-          <input className="input" placeholder="Jan Kowalski" />
+          <input className="input" placeholder="Jan Kowalski" value={f.name} onChange={up('name')} />
         </div>
         <div>
           <label className="field-label">Email *</label>
-          <input className="input" placeholder="jan@firma.pl" />
+          <input className="input" placeholder="jan@firma.pl" value={f.email} onChange={up('email')} />
         </div>
         <div>
           <label className="field-label">Telefon</label>
-          <input className="input" placeholder="+48 600 000 000" />
+          <input className="input" placeholder="+48 600 000 000" value={f.phone} onChange={up('phone')} />
         </div>
         <div>
           <label className="field-label">Firma</label>
-          <input className="input" placeholder="Nazwa firmy" />
+          <input className="input" placeholder="Nazwa firmy" value={f.company} onChange={up('company')} />
         </div>
         <div>
           <label className="field-label">Status</label>
-          <select className="select-native" defaultValue="nowy">
+          <select className="select-native" value={f.status} onChange={up('status')}>
             {window.DB.STATUSES.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
           </select>
         </div>
         <div style={{ gridColumn: '1 / -1' }}>
           <label className="field-label">Przypisz do</label>
-          <select className="select-native" defaultValue="u2">
+          <select className="select-native" value={f.assignedTo} onChange={up('assignedTo')}>
             {window.DB.agents().map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
           </select>
         </div>

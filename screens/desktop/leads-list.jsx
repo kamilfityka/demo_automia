@@ -72,9 +72,8 @@ function LeadsScreen({ user }) {
   const pageRows = filtered.slice(page * perPage, page * perPage + perPage);
   React.useEffect(() => { setPage(0); }, [search, statusFilter, perPage]);
 
-  const setStatus = (id, status) => {
-    setLeadsState(s => s.map(l => l.id === id ? { ...l, status } : l));
-  };
+  const setStatus = (id, status) => { window.DB.setLeadStatus(id, status); setLeadsState(window.DB.leads); };
+  const removeLead = (id) => { window.DB.deleteLead(id); setLeadsState(window.DB.leads); setSelected(s => s.filter(x => x !== id)); };
 
   const allChecked = pageRows.length > 0 && pageRows.every(l => selected.includes(l.id));
   const toggleAll = () => setSelected(allChecked ? selected.filter(id => !pageRows.find(l => l.id === id)) : [...new Set([...selected, ...pageRows.map(l => l.id)])]);
@@ -117,19 +116,19 @@ function LeadsScreen({ user }) {
 
       {view === 'table'
         ? <LeadsTable rows={pageRows} all={filtered} selected={selected} toggleAll={toggleAll} toggleOne={toggleOne} allChecked={allChecked}
-            SortHead={SortHead} nav={nav} setStatus={setStatus} toast={toast}
+            SortHead={SortHead} nav={nav} setStatus={setStatus} removeLead={removeLead} toast={toast}
             page={page} setPage={setPage} pageCount={pageCount} perPage={perPage} setPerPage={setPerPage}
             setSelected={setSelected} />
         : <LeadsKanbanD leads={filtered} setStatus={setStatus} onOpen={setSlideId} toast={toast} />}
 
-      <NewLeadModalD open={newOpen} onClose={() => setNewOpen(false)} onCreate={() => { setNewOpen(false); toast('Lead utworzony'); }} />
+      <NewLeadModalD open={newOpen} onClose={() => setNewOpen(false)} onCreate={(data) => { window.DB.addLead(data); setLeadsState(window.DB.leads); setNewOpen(false); toast('Lead utworzony'); }} />
       <LeadSlideOverD id={slideId} onClose={() => setSlideId(null)} nav={nav} />
     </>
   );
 }
 
 /* ---------- Table view ---------- */
-function LeadsTable({ rows, all, selected, toggleAll, toggleOne, allChecked, SortHead, nav, setStatus, toast, page, setPage, pageCount, perPage, setPerPage, setSelected }) {
+function LeadsTable({ rows, all, selected, toggleAll, toggleOne, allChecked, SortHead, nav, setStatus, removeLead, toast, page, setPage, pageCount, perPage, setPerPage, setSelected }) {
   const cols = '40px 1.7fr 1.5fr 130px 1.1fr 1.2fr 130px 50px';
   if (all.length === 0) {
     return <div style={{ padding: '0 40px 40px' }}><div className="surface"><EmptyState icon="inbox" title="Brak leadów" text="Nie ma jeszcze żadnych leadów. Opublikuj formularz i poczekaj na pierwsze zgłoszenia." action={<button className="btn btn-primary btn-sm" onClick={() => nav('/forms')}><Icon name="forms" size={16} /> Przejdź do formularzy</button>} /></div></div>;
@@ -189,9 +188,9 @@ function LeadsTable({ rows, all, selected, toggleAll, toggleOne, allChecked, Sor
               <Menu trigger={<button className="btn-icon" style={{ width: 32, height: 32 }}><Icon name="more" size={16} /></button>}
                 items={[
                   { icon: 'edit', label: 'Edytuj', onClick: () => nav('/leads/' + l.id) },
-                  { icon: 'tag', label: 'Zmień status', onClick: () => toast('Zmień status') },
+                  { icon: 'tag', label: 'Zmień status', onClick: () => nav('/leads/' + l.id) },
                   { divider: true },
-                  { icon: 'trash', label: 'Usuń', danger: true, onClick: () => toast('Usunięto lead') },
+                  { icon: 'trash', label: 'Usuń', danger: true, onClick: () => { removeLead(l.id); toast('Lead usunięty'); } },
                 ]} />
             </div>
           );

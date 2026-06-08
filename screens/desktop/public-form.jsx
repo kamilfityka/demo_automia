@@ -16,7 +16,22 @@ function PublicFormScreen({ slug }) {
       if (f.type === 'email' && values[f.id] && !values[f.id].includes('@')) errs[f.id] = 'Nieprawidłowy email';
     });
     setErrors(errs);
-    if (Object.keys(errs).length === 0) setSubmitted(true);
+    if (Object.keys(errs).length === 0) {
+      const pick = (needle) => { const f = schema.find(x => x.type !== 'section' && x.label.toLowerCase().includes(needle)); return f ? (values[f.id] || '') : ''; };
+      const answers = schema.filter(f => f.type !== 'section').map(f => ({
+        label: f.label, value: Array.isArray(values[f.id]) ? values[f.id].join(', ') : (values[f.id] || ''),
+      }));
+      window.DB.addLead({
+        name: pick('imię') || 'Zgłoszenie z formularza',
+        email: pick('email'),
+        phone: pick('telefon'),
+        company: pick('firma'),
+        formId: form.id,
+        assignedTo: form.assignTo,
+        answers,
+      });
+      setSubmitted(true);
+    }
   };
 
   return (

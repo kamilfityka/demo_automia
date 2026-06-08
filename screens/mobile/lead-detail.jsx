@@ -7,7 +7,7 @@ function LeadDetailScreen({ id }) {
   const base = window.DB.leadById(id);
   const [lead, setLead] = React.useState(base);
   const [note, setNote] = React.useState('');
-  const [notes, setNotes] = React.useState([]);
+  const [notes, setNotes] = React.useState(() => window.DB.notesFor(id));
   const [tags, setTags] = React.useState(base ? [...base.tags] : []);
   const [tagInput, setTagInput] = React.useState('');
   const [lostOpen, setLostOpen] = React.useState(false);
@@ -27,18 +27,23 @@ function LeadDetailScreen({ id }) {
 
   const changeStatus = (s) => {
     if (s === 'przegrany') { setLostOpen(true); return; }
+    window.DB.setLeadStatus(lead.id, s);
     setLead(l => ({ ...l, status: s })); toast('Status: „' + window.DB.statusByKey(s).label + '”');
   };
-  const confirmLost = () => { setLead(l => ({ ...l, status: 'przegrany' })); setLostOpen(false); toast('Status: „Przegrany”'); };
+  const confirmLost = () => { window.DB.setLeadStatus(lead.id, 'przegrany'); setLead(l => ({ ...l, status: 'przegrany' })); setLostOpen(false); toast('Status: „Przegrany”'); };
   const addNote = () => {
     if (!note.trim()) return;
-    setNotes(n => [{ text: note, time: 'teraz', user: 'u1' }, ...n]);
+    window.DB.addNote(lead.id, 'u1', note.trim());
+    setNotes(window.DB.notesFor(lead.id));
     setNote(''); toast('Notatka zapisana');
   };
   const addTag = (e) => {
-    if (e.key === 'Enter' && tagInput.trim()) { setTags(t => [...new Set([...t, tagInput.trim()])]); setTagInput(''); }
+    if (e.key === 'Enter' && tagInput.trim()) {
+      const nt = [...new Set([...tags, tagInput.trim()])];
+      setTags(nt); window.DB.updateLead(lead.id, { tags: nt }); setTagInput('');
+    }
   };
-  const assign = (uid) => { setLead(l => ({ ...l, assignedTo: uid })); setAssignOpen(false); toast('Lead przypisany'); };
+  const assign = (uid) => { window.DB.updateLead(lead.id, { assignedTo: uid }); setLead(l => ({ ...l, assignedTo: uid })); setAssignOpen(false); toast('Lead przypisany'); };
 
   return (
     <>
@@ -109,7 +114,7 @@ function LeadDetailScreen({ id }) {
             {tags.map(t => (
               <span key={t} className="chip" style={{ paddingRight: 6 }}>
                 <Icon name="tag" size={12} /> {t}
-                <button onClick={() => setTags(x => x.filter(y => y !== t))} className="btn-icon" style={{ width: 22, height: 22, background: 'transparent' }}><Icon name="x" size={13} /></button>
+                <button onClick={() => { const nt = tags.filter(y => y !== t); setTags(nt); window.DB.updateLead(lead.id, { tags: nt }); }} className="btn-icon" style={{ width: 22, height: 22, background: 'transparent' }}><Icon name="x" size={13} /></button>
               </span>
             ))}
           </div>
