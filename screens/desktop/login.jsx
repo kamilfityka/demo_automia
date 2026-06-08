@@ -85,8 +85,7 @@ function LoginScreen() {
         <div style={{ position: 'absolute', top: -120, right: -80, width: 420, height: 420, borderRadius: '50%', background: 'rgba(255,255,255,0.16)', filter: 'blur(40px)' }} />
         <div style={{ position: 'absolute', bottom: -140, left: -60, width: 360, height: 360, borderRadius: '50%', background: 'rgba(26,21,96,0.5)', filter: 'blur(50px)' }} />
 
-        {/* Zdjęcie automatów — podmień placeholder na własne zdjęcie:
-            <img src="assets/automaty.jpg" alt="Automaty Automnia" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> */}
+        <img src="assets/automaty.jpg" alt="Automaty Automnia" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         <div style={{ position: 'relative', width: '100%', maxWidth: 480, aspectRatio: '16 / 10', borderRadius: 24, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.35)', background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(6px)', boxShadow: '0 24px 70px rgba(0,0,0,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.92)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, padding: 24 }}>
             <Icon name="image" size={42} stroke={1.7} />
