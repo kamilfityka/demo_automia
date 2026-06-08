@@ -43,7 +43,7 @@ function PublicFormScreen({ slug }) {
         {/* logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, justifyContent: 'center', marginBottom: 26 }}>
           <span style={{ width: 38, height: 38, borderRadius: 12, background: 'var(--gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(155,64,224,0.45)' }}><Icon name="sparkles" size={20} stroke={2.2} /></span>
-          <span style={{ fontFamily: 'var(--font-head)', fontWeight: 800, fontSize: 18 }}>LeadBase</span>
+          <span style={{ fontFamily: 'var(--font-head)', fontWeight: 800, fontSize: 18 }}>Automnia</span>
         </div>
 
         {submitted ? (
@@ -77,7 +77,7 @@ function PublicFormScreen({ slug }) {
             </form>
           </div>
         )}
-        <p className="muted" style={{ textAlign: 'center', fontSize: 12, marginTop: 20 }}>Chronione przez LeadBase · Twoje dane są bezpieczne</p>
+        <p className="muted" style={{ textAlign: 'center', fontSize: 12, marginTop: 20 }}>Chronione przez Automnia · Twoje dane są bezpieczne</p>
       </div>
     </div>
   );

@@ -245,7 +245,7 @@ function FormSettings({ name, setName, slug, setSlug }) {
         <div>
           <label className="field-label">Slug URL</label>
           <div style={{ display: 'flex', alignItems: 'center', gap: 0, background: '#fff', borderRadius: 50, paddingLeft: 18, overflow: 'hidden' }}>
-            <span style={{ color: 'var(--color-input-placeholder)', fontSize: 13.5, whiteSpace: 'nowrap' }}>leadbase.app/f/</span>
+            <span style={{ color: 'var(--color-input-placeholder)', fontSize: 13.5, whiteSpace: 'nowrap' }}>automnia.pl/f/</span>
             <input value={slug} onChange={e => setSlug(e.target.value.replace(/\s+/g, '-').toLowerCase())} style={{ flex: 1, height: 48, border: 'none', outline: 'none', background: 'transparent', color: 'var(--color-input-text)', fontSize: 13.5, fontWeight: 600, paddingLeft: 2 }} />
           </div>
           <div className="field-help">Adres musi być unikalny. Generowany automatycznie z nazwy.</div>
@@ -261,11 +261,11 @@ function FormSettings({ name, setName, slug, setSlug }) {
         <div className="divider" />
         <div>
           <label className="field-label">Autoresponder — temat</label>
-          <input className="input" defaultValue="Potwierdzenie zgłoszenia — AutomiaCRM" />
+          <input className="input" defaultValue="Potwierdzenie zgłoszenia — Automnia" />
         </div>
         <div>
           <label className="field-label">Autoresponder — treść</label>
-          <textarea className="textarea" defaultValue={"Cześć {{imię}},\n\ndziękujemy za kontakt. Otrzymaliśmy Twoje zgłoszenie z adresu {{email}} i wrócimy z odpowiedzią najszybciej jak to możliwe.\n\nPozdrawiamy,\nZespół AutomiaCRM"} style={{ minHeight: 140 }} />
+          <textarea className="textarea" defaultValue={"Cześć {{imię}},\n\ndziękujemy za kontakt. Otrzymaliśmy Twoje zgłoszenie z adresu {{email}} i wrócimy z odpowiedzią najszybciej jak to możliwe.\n\nPozdrawiamy,\nZespół Automnia"} style={{ minHeight: 140 }} />
           <div className="field-help">Dostępne placeholdery: {'{{imię}}'}, {'{{email}}'}</div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
