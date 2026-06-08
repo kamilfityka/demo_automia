@@ -72,13 +72,13 @@ function LoginScreen() {
         </div>
       </div>
 
-      {/* right — full-bleed photo with overlaid copy */}
-      <div style={{ flex: '1 1 50%', position: 'relative', overflow: 'hidden', padding: 56, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', background: 'var(--gradient)' }}>
-        <img src="assets/automaty.png" alt="Automaty samoobsługowe Automnia" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-        {/* scrim for legibility of the overlaid text */}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,8,40,0.92) 0%, rgba(10,8,40,0.55) 34%, rgba(10,8,40,0.08) 68%)' }} />
+      {/* right — photo (capped at 480px tall) + copy below */}
+      <div style={{ flex: '1 1 50%', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 36, background: 'var(--gradient)' }}>
+        <div style={{ width: '100%', height: 480, overflow: 'hidden' }}>
+          <img src="assets/automaty.png" alt="Automaty samoobsługowe Automnia" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+        </div>
 
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', padding: '0 56px' }}>
           <div style={{ display: 'flex', gap: 10, marginBottom: 22 }}>
             {['Nowy', 'W toku', 'Wygrany'].map((s, i) => (
               <div key={i} style={{ background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 50, padding: '7px 16px', fontSize: 13, fontWeight: 600, backdropFilter: 'blur(8px)' }}>{s}</div>
